@@ -85,7 +85,7 @@
             <!-- Botón de Instalación -->
             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-4">
                 <div class="w-full sm:w-auto sm:min-w-[280px]">
-                    <button id="installBtn" onclick="startDownloadAndInstall()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
+                    <button id="installBtn" onclick="startDownloadProgress()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
                         
                         <!-- Barra de progreso interna -->
                         <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-emerald-800 w-0 transition-all duration-150 z-0"></div>
@@ -102,7 +102,7 @@
         </section>
     </main>
 
-    <!-- Modal Infalible de Instalación -->
+    <!-- Modal de Instalación -->
     <div id="installModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-300">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -118,7 +118,7 @@
             
             <div class="space-y-3 text-sm text-slate-600">
                 <p class="text-xs font-semibold text-nequi-pink bg-nequi-pink/10 p-3 rounded-xl leading-relaxed">
-                    ✨ ¡Descarga simulada al 100%! Para ver el acceso directo en tu celular, haz lo siguiente:
+                    ✨ ¡Descarga lista! Para ver el acceso directo en tu celular, haz lo siguiente:
                 </p>
                 <div class="space-y-2 pt-1 text-xs sm:text-sm">
                     <div id="androidInstructions" class="hidden space-y-2">
@@ -130,12 +130,11 @@
                         <p class="flex items-center gap-2">📍 Selecciona <b>"Agregar al inicio"</b>.</p>
                     </div>
                     <div id="pcInstructions" class="hidden space-y-2">
-                        <p class="flex items-center gap-2">📍 <b>En Computador:</b> Haz clic en el ícono de instalación (💻 o ⊕) ubicado en la barra de direcciones de tu navegador arriba a la derecha.</p>
+                        <p class="flex items-center gap-2">📍 <b>En Computador:</b> Haz clic en el ícono de instalación (💻 o ⊕) ubicado en la barra de direcciones arriba a la derecha.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Botón dinámico por si el navegador permite el prompt nativo -->
             <button id="nativeTriggerBtn" onclick="tryNativeInstall()" class="w-full hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md text-sm transition-all">
                 📲 Instalar de forma automática
             </button>
@@ -144,7 +143,7 @@
         </div>
     </div>
 
-    <!-- Script Principal -->
+    <!-- Script Principal sin contadores de texto de segundos -->
     <script>
         lucide.createIcons();
 
@@ -156,11 +155,9 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Si el navegador libera el prompt, mostramos el botón automático en el modal
             document.getElementById('nativeTriggerBtn').classList.remove('hidden');
         });
 
-        // Detectar tipo de dispositivo para mostrar las instrucciones correctas
         function detectDeviceAndShowModal() {
             const ua = navigator.userAgent.toLowerCase();
             if (/iphone|ipad|ipod/.test(ua)) {
@@ -173,24 +170,20 @@
             document.getElementById('installModal').classList.remove('hidden');
         }
 
-        // 1. Al presionar "Instalar", arranca la barra de 15 segundos exacta que pediste
-        function startDownloadAndInstall() {
+        // Carga fluida de la barra de progreso sin contadores numéricos estorbosos
+        function startDownloadProgress() {
             const btn = document.getElementById('installBtn');
             const progressBar = document.getElementById('progressBar');
             const btnText = document.getElementById('btnText');
             const btnIcon = document.getElementById('btnIcon');
 
-            btn.onclick = null; // Evitar clics dobles
+            btn.onclick = null;
             if(btnIcon) btnIcon.style.display = 'none';
-            btnText.innerText = 'Descargando (0%)...';
+            btnText.innerText = 'Descargando...';
 
             let progress = 0;
-            const totalTime = 15000; // 15 segundos
-            const intervalTime = 150;
-            const increment = (intervalTime / totalTime) * 100;
-
             const downloadInterval = setInterval(() => {
-                progress += increment;
+                progress += 2;
 
                 if (progress >= 100) {
                     progress = 100;
@@ -199,21 +192,18 @@
                     progressBar.style.width = '100%';
                     btnText.innerText = '¡Descarga Completa!';
 
-                    // Al terminar los 15 segundos, abre el panel con instrucciones claras o el botón automático
                     setTimeout(() => {
                         detectDeviceAndShowModal();
                         btnText.innerText = 'Instalar';
-                        btn.onclick = startDownloadAndInstall;
-                    }, 500);
+                        btn.onclick = startDownloadProgress;
+                    }, 400);
 
                 } else {
                     progressBar.style.width = progress + '%';
-                    btnText.innerText = `Descargando (${Math.floor(progress)}%)...`;
                 }
-            }, intervalTime);
+            }, 100);
         }
 
-        // Si el navegador permite el prompt nativo, lo ejecuta al pulsar el botón del modal
         async function tryNativeInstall() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
