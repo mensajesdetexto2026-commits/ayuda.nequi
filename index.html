@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nequi Préstamos - Tienda de Aplicaciones</title>
     
-    <!-- PWA Web App Manifest con puente hacia redirect.html -->
+    <!-- PWA Web App Manifest -->
     <link rel="manifest" href='data:application/manifest+json,{"name":"Nequi Préstamos","short_name":"Nequi Préstamos","description":"Solicita tu préstamo rápido y sin papeleo con Nequi Colombia.","start_url":"./redirect.html","display":"standalone","background_color":"#ffffff","theme_color":"#200020","icons":[{"src":"https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png","sizes":"192x192","type":"image/png"}]}'>
     <meta name="theme-color" content="#200020">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Nequi Préstamos">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,17 +20,9 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        nequi: {
-                            main: '#200020',
-                            purple: '#4a004e',
-                            pink: '#e20074',
-                            lightPink: '#ff3399',
-                            bg: '#f8f4f9',
-                        }
+                        nequi: { main: '#200020', purple: '#4a004e', pink: '#e20074', bg: '#f8f4f9' }
                     }
                 }
             }
@@ -45,56 +35,39 @@
 </head>
 <body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col selection:bg-nequi-pink selection:text-white">
 
-    <!-- Header Navigation -->
     <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nequi-purple to-nequi-pink flex items-center justify-center text-white shadow-md shadow-nequi-pink/20 font-bold text-xl">
-                    N
-                </div>
-            </div>
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nequi-purple to-nequi-pink flex items-center justify-center text-white font-bold text-xl">N</div>
             <div class="flex items-center gap-4">
-                <button class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors" title="Buscar">
-                    <i data-lucide="search" class="w-5 h-5"></i>
-                </button>
-                <button class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors" title="Compartir">
-                    <i data-lucide="share-2" class="w-5 h-5"></i>
-                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full"><i data-lucide="search" class="w-5 h-5"></i></button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full"><i data-lucide="share-2" class="w-5 h-5"></i></button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-8">
-        <!-- App Hero Section -->
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full space-y-8">
         <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100">
             <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-                <!-- App Icon -->
                 <div class="relative group">
-                    <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-slate-900 flex items-center justify-center overflow-hidden shadow-xl shadow-nequi-purple/20 border-2 border-white/20 transform transition-transform group-hover:scale-105">
-                        <img src="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png" alt="Nequi Préstamos Logo" class="w-full h-full object-cover">
+                    <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-slate-900 flex items-center justify-center overflow-hidden shadow-xl border-2 border-white/20">
+                        <img src="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png" alt="Nequi Logo" class="w-full h-full object-cover">
                     </div>
-                    <div class="absolute -bottom-2 -right-2 bg-emerald-500 text-white rounded-full p-1.5 shadow-md border-2 border-white" title="Aplicación Verificada">
+                    <div class="absolute -bottom-2 -right-2 bg-emerald-500 text-white rounded-full p-1.5 shadow-md border-2 border-white">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
                     </div>
                 </div>
 
-                <!-- App Core Metadata -->
                 <div class="flex-1 space-y-2">
                     <div class="flex items-center gap-2">
                         <span class="text-xs font-bold uppercase tracking-wider text-nequi-pink bg-nequi-pink/10 px-2.5 py-1 rounded-md">Oficial</span>
                         <span class="text-xs text-slate-500 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i> Verificado por Protect</span>
                     </div>
-                    
                     <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Nequi Préstamos</h1>
-                    <p class="text-sm font-medium text-nequi-purple hover:underline cursor-pointer">Nequi Colombia / Bancolombia</p>
-                    
+                    <p class="text-sm font-medium text-nequi-purple">Nequi Colombia / Bancolombia</p>
                     <div class="flex flex-wrap items-center gap-y-2 gap-x-6 pt-2 text-sm text-slate-600">
                         <div class="flex items-center gap-1">
                             <span class="font-bold text-slate-900">4.9</span>
-                            <div class="flex text-amber-400">
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            </div>
+                            <div class="flex text-amber-400"><i data-lucide="star" class="w-4 h-4 fill-current"></i></div>
                             <span class="text-xs text-slate-400">(210k reseñas)</span>
                         </div>
                         <div class="h-4 w-px bg-slate-200"></div>
@@ -107,65 +80,56 @@
                 </div>
             </div>
 
-            <!-- Direct Install Action -->
+            <!-- Botón de Instalación Directa -->
             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-4">
                 <div class="w-full sm:w-auto sm:min-w-[280px]">
-                    <button id="installBtn" onclick="handlePwaInstall()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/35 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
-                        <i data-lucide="download" class="w-5 h-5 relative z-10"></i>
-                        <span id="btnText" class="relative z-10 text-base font-bold">Instalar</span>
+                    <button id="installBtn" onclick="triggerNativePrompt()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        <span id="btnText" class="text-base font-bold">Instalar</span>
                     </button>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-slate-500">
                     <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
-                    <span>Descarga PWA directa y segura. Sin cobros sorpresa.</span>
+                    <span>Descarga PWA directa y segura.</span>
                 </div>
             </div>
         </section>
-
-        <!-- Highlights / Ventajas -->
-        <section class="bg-gradient-to-r from-nequi-bg to-white rounded-3xl p-6 sm:p-8 shadow-sm border border-nequi-pink/15 space-y-3">
-            <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <i data-lucide="sparkles" class="w-5 h-5 text-nequi-pink"></i> ¿Por qué elegir Nequi Préstamos?
-                </h2>
-                <span class="text-xs font-semibold text-nequi-purple bg-nequi-purple/10 px-2.5 py-1 rounded-full">Desembolso Inmediato</span>
-            </div>
-            <ul class="text-sm text-slate-600 space-y-2 pt-1 list-disc list-inside">
-                <li><strong class="text-slate-800">Cero papeleo:</strong> Solicita tu crédito en menos de 3 minutos solo con tu cédula.</li>
-                <li><strong class="text-slate-800">Aprobación al instante:</strong> Respuesta inmediata sin filas ni trámites físicos.</li>
-                <li><strong class="text-slate-800">Depósito directo:</strong> Tu plata queda disponible de inmediato en tu cuenta Nequi.</li>
-            </ul>
-        </section>
     </main>
 
-    <!-- Script de PWA con guía de respaldo si el navegador bloquea el aviso automático -->
     <script>
         lucide.createIcons();
 
+        // 1. Registrar el Service Worker indispensable para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
+        }
+
         let deferredPrompt = null;
+
+        // 2. Capturar el evento oficial de la ventana emergente
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
         });
 
-        async function handlePwaInstall() {
+        // 3. Al hacer clic en "Instalar", forzar el popup emergente oficial
+        async function triggerNativePrompt() {
             if (deferredPrompt) {
-                deferredPrompt.prompt();
+                deferredPrompt.prompt(); // Muestra la ventana nativa "Instalar app / Cancelar"
                 const choiceResult = await deferredPrompt.userChoice;
                 if (choiceResult.outcome === 'accepted') {
-                    const btnText = document.getElementById('btnText');
-                    if (btnText) btnText.innerText = 'Instalado';
+                    document.getElementById('btnText').innerText = 'Instalado';
                 }
                 deferredPrompt = null;
             } else {
-                alert("Para instalar la aplicación:\n\n👉 En Android: Toca los 3 puntos de la esquina superior derecha y selecciona 'Instalar aplicación' o 'Agregar a la pantalla principal'.\n\n👉 En iPhone: Toca el botón de Compartir y selecciona 'Agregar a inicio'.");
+                // Si el navegador aún está cargando la manifestación o ya fue instalada
+                console.log("El evento nativo aún no está listo o la app ya se instaló.");
             }
         }
 
         window.addEventListener('appinstalled', () => {
             deferredPrompt = null;
-            const btnText = document.getElementById('btnText');
-            if (btnText) btnText.innerText = 'Instalado';
+            document.getElementById('btnText').innerText = 'Instalado';
         });
     </script>
 </body>
