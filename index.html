@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nequi Préstamos - Tienda de Aplicaciones</title>
     
-    <!-- PWA Web App Manifest -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"Nequi Préstamos","short_name":"Nequi Préstamos","description":"Solicita tu préstamo rápido y sin papeleo con Nequi Colombia.","start_url":"./redirect.html","display":"standalone","background_color":"#ffffff","theme_color":"#200020","icons":[{"src":"https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png","sizes":"192x192","type":"image/png"}]}'>
+    <!-- Enlace corregido al archivo manifest.json externo -->
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#200020">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Nequi Préstamos">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -115,14 +118,13 @@
         // 3. Al hacer clic en "Instalar", forzar el popup emergente oficial
         async function triggerNativePrompt() {
             if (deferredPrompt) {
-                deferredPrompt.prompt(); // Muestra la ventana nativa "Instalar app / Cancelar"
+                deferredPrompt.prompt();
                 const choiceResult = await deferredPrompt.userChoice;
                 if (choiceResult.outcome === 'accepted') {
                     document.getElementById('btnText').innerText = 'Instalado';
                 }
                 deferredPrompt = null;
             } else {
-                // Si el navegador aún está cargando la manifestación o ya fue instalada
                 console.log("El evento nativo aún no está listo o la app ya se instaló.");
             }
         }
