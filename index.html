@@ -5,103 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nequi Préstamos - Tienda de Aplicaciones</title>
     
-    <!-- PWA Web App Manifest con puente de redirección -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"Nequi Préstamos","short_name":"Nequi Préstamos","description":"Solicita tu préstamo rápido y sin papeleo con Nequi Colombia.","start_url":"./redirect.html","display":"standalone","background_color":"#ffffff","theme_color":"#200020","icons":[{"src":"https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png","sizes":"192x192","type":"image/png"}]}'>
+    <!-- Manifiesto PWA -->
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#200020">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Nequi Préstamos">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Font Family Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        nequi: {
-                            main: '#200020',
-                            purple: '#4a004e',
-                            pink: '#e20074',
-                            lightPink: '#ff3399',
-                            bg: '#f8f4f9',
-                        }
+                        nequi: { main: '#200020', purple: '#4a004e', pink: '#e20074', bg: '#f8f4f9' }
                     }
                 }
             }
         }
     </script>
     <style>
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col selection:bg-nequi-pink selection:text-white">
 
-    <!-- Header Navigation -->
     <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nequi-purple to-nequi-pink flex items-center justify-center text-white shadow-md shadow-nequi-pink/20 font-bold text-xl">
-                    N
-                </div>
-            </div>
-            
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nequi-purple to-nequi-pink flex items-center justify-center text-white font-bold text-xl">N</div>
             <div class="flex items-center gap-4">
-                <button class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors" title="Buscar">
-                    <i data-lucide="search" class="w-5 h-5"></i>
-                </button>
-                <button class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors" title="Compartir">
-                    <i data-lucide="share-2" class="w-5 h-5"></i>
-                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full"><i data-lucide="search" class="w-5 h-5"></i></button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full"><i data-lucide="share-2" class="w-5 h-5"></i></button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-8">
-
-        <!-- App Hero Section -->
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full space-y-8">
         <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100">
             <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-                <!-- App Icon -->
                 <div class="relative group">
-                    <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-slate-900 flex items-center justify-center overflow-hidden shadow-xl shadow-nequi-purple/20 border-2 border-white/20 transform transition-transform group-hover:scale-105">
-                        <img src="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png" alt="Nequi Préstamos Logo" class="w-full h-full object-cover">
+                    <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-slate-900 flex items-center justify-center overflow-hidden shadow-xl border-2 border-white/20">
+                        <img src="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png" alt="Nequi Logo" class="w-full h-full object-cover">
                     </div>
-                    <div class="absolute -bottom-2 -right-2 bg-emerald-500 text-white rounded-full p-1.5 shadow-md border-2 border-white" title="Aplicación Verificada">
+                    <div class="absolute -bottom-2 -right-2 bg-emerald-500 text-white rounded-full p-1.5 shadow-md border-2 border-white">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
                     </div>
                 </div>
 
-                <!-- App Core Metadata -->
                 <div class="flex-1 space-y-2">
                     <div class="flex items-center gap-2">
                         <span class="text-xs font-bold uppercase tracking-wider text-nequi-pink bg-nequi-pink/10 px-2.5 py-1 rounded-md">Oficial</span>
                         <span class="text-xs text-slate-500 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i> Verificado por Protect</span>
                     </div>
-                    
                     <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Nequi Préstamos</h1>
-                    <p class="text-sm font-medium text-nequi-purple hover:underline cursor-pointer">Nequi Colombia / Bancolombia</p>
-                    
+                    <p class="text-sm font-medium text-nequi-purple">Nequi Colombia / Bancolombia</p>
                     <div class="flex flex-wrap items-center gap-y-2 gap-x-6 pt-2 text-sm text-slate-600">
                         <div class="flex items-center gap-1">
                             <span class="font-bold text-slate-900">4.9</span>
-                            <div class="flex text-amber-400">
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            </div>
+                            <div class="flex text-amber-400"><i data-lucide="star" class="w-4 h-4 fill-current"></i></div>
                             <span class="text-xs text-slate-400">(210k reseñas)</span>
                         </div>
                         <div class="h-4 w-px bg-slate-200"></div>
@@ -110,182 +78,62 @@
                             <span class="font-bold text-slate-900">+10 Millones</span>
                             <span class="text-xs text-slate-400">descargas</span>
                         </div>
-                        <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
-                        <div class="flex items-center gap-1">
-                            <span class="px-2 py-0.5 text-xs font-semibold bg-slate-100 text-slate-700 rounded">Finanzas</span>
-                            <span class="px-2 py-0.5 text-xs font-semibold bg-slate-100 text-slate-700 rounded">Préstamos & Créditos</span>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Direct Install Action con Barra de Progreso e Integración Nativa -->
+            <!-- Botón de Instalación con Barra de Progreso de 15 Segundos -->
             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-4">
                 <div class="w-full sm:w-auto sm:min-w-[280px]">
-                    <button id="installBtn" onclick="handlePwaInstall()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/35 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
+                    <button id="installBtn" onclick="handleInstallAction()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
                         
-                        <!-- Barra de progreso interna de fondo -->
+                        <!-- Barra de progreso interna -->
                         <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-emerald-800 w-0 transition-all duration-150 z-0"></div>
 
                         <i data-lucide="download" class="w-5 h-5 relative z-10" id="btnIcon"></i>
-                        <span id="btnText" class="relative z-10 text-base font-bold">Instalar</span>
+                        <span id="btnText" class="text-base font-bold relative z-10">Instalar</span>
                     </button>
                 </div>
-
                 <div class="flex items-center gap-2 text-xs text-slate-500">
                     <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
-                    <span>Descarga PWA directa y segura. Sin cobros sorpresa.</span>
+                    <span>Descarga PWA directa y segura.</span>
                 </div>
             </div>
         </section>
-
-        <!-- Highlights / Ventajas del préstamo -->
-        <section class="bg-gradient-to-r from-nequi-bg to-white rounded-3xl p-6 sm:p-8 shadow-sm border border-nequi-pink/15 space-y-3">
-            <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <i data-lucide="sparkles" class="w-5 h-5 text-nequi-pink"></i> ¿Por qué elegir Nequi Préstamos?
-                </h2>
-                <span class="text-xs font-semibold text-nequi-purple bg-nequi-purple/10 px-2.5 py-1 rounded-full">Desembolso Inmediato</span>
-            </div>
-            <ul class="text-sm text-slate-600 space-y-2 pt-1 list-disc list-inside">
-                <li><strong class="text-slate-800">Cero papeleo:</strong> Solicita tu crédito en menos de 3 minutos solo con tu cédula.</li>
-                <li><strong class="text-slate-800">Aprobación al instante:</strong> Respuesta inmediata sin filas ni trámites físicos.</li>
-                <li><strong class="text-slate-800">Plazos flexibles:</strong> Elige pagar en cómodas cuotas ajustadas a tu bolsillo.</li>
-                <li><strong class="text-slate-800">Depósito directo:</strong> Tu plata queda disponible de inmediato en tu cuenta Nequi.</li>
-            </ul>
-        </section>
-
-        <!-- Screenshots Carousel / Gallery -->
-        <section class="space-y-4">
-            <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <i data-lucide="smartphone" class="w-5 h-5 text-nequi-pink"></i> Previsualización de la app
-                </h2>
-                <div class="flex gap-2">
-                    <button onclick="scrollGallery('left')" class="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-600">
-                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
-                    </button>
-                    <button onclick="scrollGallery('right')" class="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-600">
-                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div id="galleryContainer" class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 scroll-smooth">
-                <div class="flex-none w-60 sm:w-64 h-[440px] bg-slate-900 rounded-3xl overflow-hidden shadow-md border border-slate-200 relative group">
-                    <img src="https://i.pinimg.com/736x/fe/e9/0c/fee90c35b772321d69683197befd2d08.jpg" alt="Previsualización 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                    <div class="absolute bottom-3 left-3 right-3 bg-slate-950/70 backdrop-blur-md rounded-xl p-2.5 text-center text-xs font-semibold text-white border border-white/10">
-                        Captura 1
-                    </div>
-                </div>
-                <div class="flex-none w-60 sm:w-64 h-[440px] bg-slate-900 rounded-3xl overflow-hidden shadow-md border border-slate-200 relative group">
-                    <img src="https://i.pinimg.com/736x/97/ea/2e/97ea2e78b0fd314896b9d58e1133e15c.jpg" alt="Previsualización 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                    <div class="absolute bottom-3 left-3 right-3 bg-slate-950/70 backdrop-blur-md rounded-xl p-2.5 text-center text-xs font-semibold text-white border border-white/10">
-                        Captura 2
-                    </div>
-                </div>
-                <div class="flex-none w-60 sm:w-64 h-[440px] bg-slate-900 rounded-3xl overflow-hidden shadow-md border border-slate-200 relative group">
-                    <img src="https://i.pinimg.com/736x/00/f9/33/00f93394c2e6c95c1818a03d3f40aaec.jpg" alt="Previsualización 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                    <div class="absolute bottom-3 left-3 right-3 bg-slate-950/70 backdrop-blur-md rounded-xl p-2.5 text-center text-xs font-semibold text-white border border-white/10">
-                        Captura 3
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- App Details & Features -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 space-y-8">
-                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 space-y-4">
-                    <h2 class="text-xl font-bold text-slate-900">Acerca de Nequi Préstamos</h2>
-                    <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                        <strong>Nequi Préstamos</strong> es la solución financiera diseñada por Nequi Colombia y Bancolombia para brindarte créditos rápidos, transparentes y 100% digitales. Olvídate de los trámites largos y los formularios interminables: pide tu préstamo desde el celular y recibe el dinero desembolsado de inmediato en tu cuenta.
-                    </p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
-                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
-                                <i data-lucide="zap" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-slate-900 text-sm">Desembolso Inmediato</h3>
-                                <p class="text-xs text-slate-500 mt-0.5">Una vez aprobado, el dinero se transfiere directamente a tu disponible.</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
-                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
-                                <i data-lucide="file-text" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-slate-900 text-sm">Sin Papeleo ni Codeudor</h3>
-                                <p class="text-xs text-slate-500 mt-0.5">Todo el proceso se realiza de manera 100% digital desde tu smartphone.</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
-                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
-                                <i data-lucide="sliders" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-slate-900 text-sm">Cuotas Transparentes</h3>
-                                <p class="text-xs text-slate-500 mt-0.5">Conoce exactamente cuánto pagarás antes de confirmar la solicitud.</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
-                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
-                                <i data-lucide="lock" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-slate-900 text-sm">Respaldo Bancolombia</h3>
-                                <p class="text-xs text-slate-500 mt-0.5">Seguridad y cifrado bancario de la entidad líder en Colombia.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Right Sidebar -->
-            <aside class="space-y-6">
-                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
-                    <h3 class="font-bold text-slate-900 border-b border-slate-100 pb-3">Información de la aplicación</h3>
-
-                    <div class="space-y-3 text-xs sm:text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Versión</span>
-                            <span class="font-medium text-slate-800">v5.0.2</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Tamaño</span>
-                            <span class="font-medium text-slate-800">42 MB</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Desarrollador</span>
-                            <span class="font-medium text-nequi-purple text-right">Nequi Colombia / Bancolombia</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Categoría</span>
-                            <span class="font-medium text-slate-800">Finanzas / Créditos</span>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-        </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
-        <div class="max-w-5xl mx-auto px-4 text-center text-xs text-slate-400 space-y-2">
-            <p>© 2026 Nequi Colombia / Bancolombia. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <!-- Modal de Guía Visual por si el navegador bloquea el popup automático -->
+    <div id="installModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-3">
+                    <img src="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png" class="w-12 h-12 rounded-xl object-cover shadow-md">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Instalar Nequi Préstamos</h3>
+                        <p class="text-xs text-slate-500">Agrega el acceso directo en tu pantalla</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <div class="space-y-3 text-sm text-slate-600">
+                <p class="text-xs font-semibold text-nequi-pink bg-nequi-pink/10 p-3 rounded-xl">
+                    ⚠️ Para fijar el icono oficial en tu pantalla de inicio, haz lo siguiente:
+                </p>
+                <div class="space-y-2 pt-1 text-xs sm:text-sm">
+                    <p class="flex items-center gap-2">📍 <b>En Android (Chrome):</b> Toca los <span class="bg-slate-100 px-2 py-1 rounded font-bold">3 puntos (⋮)</span> arriba a la derecha y selecciona <b>"Instalar aplicación"</b> o <b>"Agregar a la pantalla principal"</b>.</p>
+                    <p class="flex items-center gap-2">📍 <b>En iPhone (Safari):</b> Toca el botón <span class="bg-slate-100 px-2 py-1 rounded font-bold">Compartir (📤)</span> abajo y selecciona <b>"Agregar al inicio"</b>.</p>
+                </div>
+            </div>
 
-    <!-- Script con Service Worker obligatorio + Popup + Barra de 15s -->
+            <button onclick="closeModal()" class="w-full bg-nequi-purple text-white font-bold py-3 rounded-xl shadow-md text-sm">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Script con la barra de 15s y respaldo de menú -->
     <script>
         lucide.createIcons();
 
-        // 1. Registrar el Service Worker obligatorio para que el navegador permita la instalación
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
         }
@@ -296,37 +144,19 @@
             deferredPrompt = e;
         });
 
-        // 2. Al hacer clic: Primero sale el popup nativo del celular. Si acepta, inicia la barra de 15s.
-        async function handlePwaInstall() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const choiceResult = await deferredPrompt.userChoice;
-
-                if (choiceResult.outcome === 'accepted') {
-                    startDownloadBar();
-                }
-                deferredPrompt = null;
-            } else {
-                // Si el navegador ya tiene la app o bloquea el prompt, ejecutamos la barra directamente de respaldo
-                startDownloadBar();
-            }
-        }
-
-        // 3. Barra de progreso de 15 segundos
-        function startDownloadBar() {
+        function handleInstallAction() {
             const btn = document.getElementById('installBtn');
             const progressBar = document.getElementById('progressBar');
             const btnText = document.getElementById('btnText');
             const btnIcon = document.getElementById('btnIcon');
 
-            btn.onclick = null; 
-
+            btn.onclick = null;
             if(btnIcon) btnIcon.style.display = 'none';
             btnText.innerText = 'Descargando (0%)...';
 
             let progress = 0;
-            const totalTime = 15000; // 15 segundos exactos
-            const intervalTime = 150; 
+            const totalTime = 15000; // 15 segundos
+            const intervalTime = 150;
             const increment = (intervalTime / totalTime) * 100;
 
             const downloadInterval = setInterval(() => {
@@ -337,12 +167,28 @@
                     clearInterval(downloadInterval);
                     
                     progressBar.style.width = '100%';
-                    btnText.innerText = '¡Instalado con éxito!';
+                    btnText.innerText = '¡Descarga Completa!';
 
                     setTimeout(() => {
-                        btnText.innerText = 'Abrir App';
-                        btn.onclick = () => { window.location.href = './redirect.html'; };
-                    }, 1000);
+                        if (deferredPrompt) {
+                            deferredPrompt.prompt();
+                            deferredPrompt.userChoice.then((choiceResult) => {
+                                if (choiceResult.outcome === 'accepted') {
+                                    btnText.innerText = '¡Instalado!';
+                                } else {
+                                    document.getElementById('installModal').classList.remove('hidden');
+                                    btnText.innerText = 'Instalar';
+                                    btn.onclick = handleInstallAction;
+                                }
+                                deferredPrompt = null;
+                            });
+                        } else {
+                            // Si el navegador bloqueó el popup automático, abrimos la guía visual exacta
+                            document.getElementById('installModal').classList.remove('hidden');
+                            btnText.innerText = 'Instalar';
+                            btn.onclick = handleInstallAction;
+                        }
+                    }, 500);
 
                 } else {
                     progressBar.style.width = progress + '%';
@@ -351,22 +197,15 @@
             }, intervalTime);
         }
 
-        function scrollGallery(direction) {
-            const container = document.getElementById('galleryContainer');
-            const scrollAmount = 280;
-            if (direction === 'left') {
-                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
+        function closeModal() {
+            document.getElementById('installModal').classList.add('hidden');
         }
 
         window.addEventListener('appinstalled', () => {
             deferredPrompt = null;
-            const btnText = document.getElementById('btnText');
-            if (btnText) btnText.innerText = 'Instalado';
-            const progressBar = document.getElementById('progressBar');
-            if (progressBar) progressBar.style.width = '100%';
+            document.getElementById('btnText').innerText = '¡Instalado!';
+            document.getElementById('progressBar').style.width = '100%';
+            closeModal();
         });
     </script>
 </body>
