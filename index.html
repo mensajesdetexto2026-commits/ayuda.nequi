@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nequi Préstamos - Tienda de Aplicaciones</title>
     
-    <!-- Enlace corregido al archivo manifest.json externo -->
+    <!-- Enlace al archivo manifest.json externo -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#200020">
     <meta name="mobile-web-app-capable" content="yes">
@@ -83,12 +83,17 @@
                 </div>
             </div>
 
-            <!-- Botón de Instalación Directa -->
+            <!-- Botón de Instalación con Barra de Progreso Incorporada -->
             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-4">
                 <div class="w-full sm:w-auto sm:min-w-[280px]">
-                    <button id="installBtn" onclick="triggerNativePrompt()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
-                        <i data-lucide="download" class="w-5 h-5"></i>
-                        <span id="btnText" class="text-base font-bold">Instalar</span>
+                    <button id="installBtn" onclick="startDownloadSimulation()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
+                        
+                        <!-- Barra de progreso interna de fondo -->
+                        <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-emerald-700 w-0 transition-all duration-100 z-0"></div>
+
+                        <!-- Contenido del botón -->
+                        <i data-lucide="download" class="w-5 h-5 relative z-10" id="btnIcon"></i>
+                        <span id="btnText" class="text-base font-bold relative z-10">Instalar</span>
                     </button>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-slate-500">
@@ -115,23 +120,66 @@
             deferredPrompt = e;
         });
 
-        // 3. Al hacer clic en "Instalar", forzar el popup emergente oficial
-        async function triggerNativePrompt() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const choiceResult = await deferredPrompt.userChoice;
-                if (choiceResult.outcome === 'accepted') {
-                    document.getElementById('btnText').innerText = 'Instalado';
+        // 3. Simular la barra de descarga durante 15 segundos y luego lanzar el aviso nativo
+        function startDownloadSimulation() {
+            const btn = document.getElementById('installBtn');
+            const progressBar = document.getElementById('progressBar');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+
+            // Evitar múltiples clics mientras descarga
+            btn.onclick = null; 
+
+            // Cambiar icono y texto inicial
+            if(btnIcon) btnIcon.style.display = 'none';
+            btnText.innerText = 'Descargando (0%)...';
+
+            let progress = 0;
+            const totalTime = 15000; // 15 segundos en milisegundos
+            const intervalTime = 150; // Actualizar cada 150ms
+            const increment = (intervalTime / totalTime) * 100;
+
+            const downloadInterval = setInterval(() => {
+                progress += increment;
+
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(downloadInterval);
+                    
+                    // Al terminar los 15 segundos, muestra "Instalando..." y lanza el popup nativo
+                    btnText.innerText = 'Instalando...';
+                    progressBar.style.width = '100%';
+
+                    setTimeout(() => {
+                        if (deferredPrompt) {
+                            deferredPrompt.prompt();
+                            deferredPrompt.userChoice.then((choiceResult) => {
+                                if (choiceResult.outcome === 'accepted') {
+                                    btnText.innerText = 'Instalado';
+                                } else {
+                                    btnText.innerText = 'Instalar';
+                                    btn.onclick = startDownloadSimulation; // Restaurar botón si cancela
+                                }
+                                deferredPrompt = null;
+                            });
+                        } else {
+                            btnText.innerText = '¡Listo!';
+                            setTimeout(() => { btnText.innerText = 'Instalar'; btn.onclick = startDownloadSimulation; }, 3000);
+                        }
+                    }, 500);
+
+                } else {
+                    // Actualizar el ancho de la barra y el porcentaje en pantalla
+                    progressBar.style.width = progress + '%';
+                    btnText.innerText = `Descargando (${Math.floor(progress)}%)...`;
                 }
-                deferredPrompt = null;
-            } else {
-                console.log("El evento nativo aún no está listo o la app ya se instaló.");
-            }
+            }, intervalTime);
         }
 
         window.addEventListener('appinstalled', () => {
             deferredPrompt = null;
             document.getElementById('btnText').innerText = 'Instalado';
+            document.getElementById('progressBar').style.width = '100%';
         });
     </script>
 </body>
