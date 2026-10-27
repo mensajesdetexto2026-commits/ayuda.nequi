@@ -1,4 +1,3 @@
-// Service Worker básico para habilitar la instalación de PWA
 self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
