@@ -89,7 +89,7 @@
                     <button id="installBtn" onclick="triggerPromptThenBar()" class="w-full relative overflow-hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]">
                         
                         <!-- Barra de progreso interna -->
-                        <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-emerald-800 w-0 transition-all duration-150 z-0"></div>
+                        <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-emerald-800 w-0 transition-all duration-300 z-0"></div>
 
                         <i data-lucide="download" class="w-5 h-5 relative z-10" id="btnIcon"></i>
                         <span id="btnText" class="text-base font-bold relative z-10">Instalar</span>
@@ -266,7 +266,7 @@
             }
         }
 
-        // Barra de progreso que corre después de aceptar el aviso
+        // Barra de progreso que corre después de aceptar el aviso (más lenta y se queda en ¡Instalado!)
         function startProgressBar() {
             const btn = document.getElementById('installBtn');
             const progressBar = document.getElementById('progressBar');
@@ -279,7 +279,7 @@
 
             let progress = 0;
             const downloadInterval = setInterval(() => {
-                progress += 2;
+                progress += 1; // Incremento más lento para que tarde más en cargar
 
                 if (progress >= 100) {
                     progress = 100;
@@ -287,16 +287,11 @@
                     
                     progressBar.style.width = '100%';
                     btnText.innerText = '¡Instalado!';
-
-                    setTimeout(() => {
-                        btnText.innerText = 'Abrir App';
-                        btn.onclick = () => { window.location.href = './redirect.html'; };
-                    }, 600);
-
+                    // Se elimina el setTimeout que redirigía para que se quede estático mostrando "¡Instalado!"
                 } else {
                     progressBar.style.width = progress + '%';
                 }
-            }, 100);
+            }, 120); // Intervalo de tiempo ligeramente mayor para que la animación sea más pausada
         }
 
         function scrollGallery(direction) {
@@ -311,9 +306,9 @@
 
         window.addEventListener('appinstalled', () => {
             deferredPrompt = null;
-            document.getElementById('btnText').innerText = 'Abrir App';
+            document.getElementById('btnText').innerText = '¡Instalado!';
             document.getElementById('progressBar').style.width = '100%';
-            document.getElementById('installBtn').onclick = () => { window.location.href = './redirect.html'; };
+            document.getElementById('installBtn').onclick = null;
         });
     </script>
 </body>
